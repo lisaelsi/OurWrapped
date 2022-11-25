@@ -100,12 +100,12 @@ def get_track_ids(no_of_tracks, playlist_id):
 
     return track_ids
 
-def get_playlists_id(new_playlist_info):
-    print(new_playlist_info.get('id'))
+def get_new_playlists_id(new_playlist_info):
+    return(new_playlist_info.get('id'))
 
-def add_track_to_playlist(track_ids):
-    # add track to ourwrapped 
+def add_track_to_playlist(track_ids, playlist_id):
     pass
+
 
 def call_refresh():
     refresh_caller = Refresh()
@@ -117,11 +117,21 @@ if __name__ == '__main__':
 
     token = call_refresh()
 
-    #new_playlist_info = create_playlist()
+    new_playlist_info = create_playlist()
     #print(new_playlist_info)
     no_of_tracks = 3
 
-    #user_playlists = get_user_playlists()
-    #playlist_id = get_user_playlist_id(user_playlists, playlist_name)
-    #track_ids = get_track_ids(no_of_tracks, playlist_id)
-    #get_playlists_id(new_playlist_info)
+    user_playlists = get_user_playlists()
+    #print(user_playlists)
+    playlist_id = get_user_playlist_id(user_playlists, playlist_name)
+    #print(playlist_id)
+    track_ids = get_track_ids(no_of_tracks, playlist_id)
+
+    # TODO - later do this for each track
+    track_id = track_ids[0]
+    # print(track_id)
+    
+    new_playlist_id = get_new_playlists_id(new_playlist_info)
+
+    # add_track_to_playlist(track_id)
+
