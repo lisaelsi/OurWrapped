@@ -19,7 +19,6 @@ import urllib.parse
 
         # Add song to OurWrapped
 
-playlist_name = "Nu är det höst"
 
 
 def create_playlist():
@@ -74,7 +73,7 @@ def get_user_playlist_id(response, playlist_name):
 
 def get_tracks_from_playlist(no_of_tracks, playlist_id):
     limit = no_of_tracks
-    offset = 10     # TODO - fix hardcoded value
+    offset = 0     # TODO - fix hardcoded value
 
     query = "https://api.spotify.com/v1/playlists/{}/tracks?fields=items(track(id))&limit={}&offset={}".format(
         playlist_id,
@@ -103,19 +102,24 @@ def get_track_ids(no_of_tracks, playlist_id):
 
 def get_new_playlists_id(new_playlist_info):
     return(new_playlist_info.get('id'))
-
-def add_track_to_playlist(track_id, playlist_id):
     
-    # TODO - add multiple songs at the same time?
-    track = 'spotify:track:' + track_id
-    print(track)
+def encode_tracks(track_ids):
+    
+    encoded_tracks = ''
 
-    track_encoded = urllib.parse.quote(track)
-    print(track_encoded)
+    for t_id in track_ids:
+        track = 'spotify:track:' + t_id + ','
+        track_encoded = urllib.parse.quote(track)
+        encoded_tracks = encoded_tracks + track_encoded
+    
+    return encoded_tracks
 
+def add_tracks(track_ids, playlist_id):
+    
+    tracks = encode_tracks(track_ids)
     query = "https://api.spotify.com/v1/playlists/{}/tracks?uris={}".format(
         playlist_id,
-        track_encoded)
+        tracks)
     response = requests.post(
         query,
         data='',
@@ -124,10 +128,6 @@ def add_track_to_playlist(track_id, playlist_id):
             "Authorization": "Bearer {}".format(token)
         }
     )
-    response_json = response.json()
-    return response_json
-    
-
 
 def call_refresh():
     refresh_caller = Refresh()
@@ -139,21 +139,29 @@ if __name__ == '__main__':
 
     token = call_refresh()
 
+    # Select playlist to get songs from
+    playlist_name = "Nu är det höst"
+
+    # Create OurWrapped playlist
     new_playlist_info = create_playlist()
-    #print(new_playlist_info)
-    no_of_tracks = 3
 
-    user_playlists = get_user_playlists()
-    #print(user_playlists)
-    playlist_id = get_user_playlist_id(user_playlists, playlist_name)
-    #print(playlist_id)
-    track_ids = get_track_ids(no_of_tracks, playlist_id)
-
-    # TODO - later do this for each track
-    track_id = track_ids[0]
-    # print(track_id)
-    
+    # Get id of newly created playlist 
     new_playlist_id = get_new_playlists_id(new_playlist_info)
 
-    add_track_to_playlist(track_id, new_playlist_id)
+    # Determines number of tracks to select
+    no_of_tracks = 3
+
+    # Gets users playlists
+    user_playlists = get_user_playlists()
+
+    # Gets playlist id of selected playlist 
+    playlist_id = get_user_playlist_id(user_playlists, playlist_name)
+
+    # Gets tracks ids from selected playlist 
+    track_ids = get_track_ids(no_of_tracks, playlist_id)
+    
+    # Add tracks to newly created playlist
+    add_tracks(track_ids, new_playlist_id)
+
+
 
