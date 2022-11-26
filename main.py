@@ -106,28 +106,27 @@ def get_new_playlists_id(new_playlist_info):
 
 def add_track_to_playlist(track_id, playlist_id):
     
+    # TODO - add multiple songs at the same time?
     track = 'spotify:track:' + track_id
     print(track)
 
     track_encoded = urllib.parse.quote(track)
     print(track_encoded)
 
-    #query = "https://api.spotify.com/v1/playlists/{}/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh".format(
-    #    playlist_id)
-    #response = requests.post(
-    #    query,
-    #    data='',
-    #    headers={
-    #        "Content-Type": "application/json",
-    #        "Authorization": "Bearer {}".format(token)
-    #    }
-    #)
-    #response_json = response.json()
-    #return response_json
+    query = "https://api.spotify.com/v1/playlists/{}/tracks?uris={}".format(
+        playlist_id,
+        track_encoded)
+    response = requests.post(
+        query,
+        data='',
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(token)
+        }
+    )
+    response_json = response.json()
+    return response_json
     
-    
-    
-    pass
 
 
 def call_refresh():
