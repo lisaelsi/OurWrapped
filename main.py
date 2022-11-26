@@ -19,8 +19,6 @@ import urllib.parse
 
         # Add song to OurWrapped
 
-
-
 def create_playlist():
     # Create playlist on spotify 
     request_body = json.dumps({
@@ -45,7 +43,7 @@ def create_playlist():
 def get_user_playlists():
     # TODO - fixa limit och offset
     limit = 5
-    offset = 10
+    offset = 10     
     query = "https://api.spotify.com/v1/users/{}/playlists?limit={}&offset={}".format(
         user_id,
         limit, 
