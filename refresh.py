@@ -20,7 +20,6 @@ class Refresh:
         data = response.json()
     
         return data["access_token"]
-        print(response.json())
 
 a = Refresh()
 a.refresh()

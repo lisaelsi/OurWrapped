@@ -143,6 +143,8 @@ if __name__ == '__main__':
 
     input_users = input("Enter usernames:")
 
+    #users = ['lisasam', '1111891353']
+
     users = input_users.split()
 
     print(users)
