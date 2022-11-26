@@ -2,7 +2,7 @@ import json
 import os
 import requests
 import base64
-from secrets import SPOTIFY_USER_ID as user_id
+from secrets import SPOTIFY_USER_ID as key_user
 from refresh import Refresh
 import urllib.parse
 import random
@@ -20,7 +20,7 @@ import random
 
         # Add song to OurWrapped
 
-def create_playlist():
+def create_playlist(user):
     # Create playlist on spotify 
     request_body = json.dumps({
         "name": "OurWrapped",
@@ -29,7 +29,7 @@ def create_playlist():
     })
 
     query = "https://api.spotify.com/v1/users/{}/playlists".format(
-        user_id)
+        user)
     response = requests.post(
         query,
         data=request_body,
@@ -41,12 +41,12 @@ def create_playlist():
     response_json = response.json()
     return response_json
 
-def get_user_playlists():
+def get_user_playlists(user):
     # TODO - fixa limit och offset
     limit = 5
-    offset = 10     
+    offset = 0    
     query = "https://api.spotify.com/v1/users/{}/playlists?limit={}&offset={}".format(
-        user_id,
+        user,
         limit, 
         offset)
     response = requests.get(
@@ -65,6 +65,7 @@ def get_user_playlist_id(response, playlist_name):
     for p in playlists:
         if p.get("name") == playlist_name:
             return(p.get('id'))
+            print(id)
 
     print('Playlist not found')
 
@@ -140,29 +141,38 @@ if __name__ == '__main__':
 
     token = call_refresh()
 
+    input_users = input("Enter usernames:")
+
+    users = input_users.split()
+
+    print(users)
+
     # Select playlist to get songs from
-    playlist_name = "Nu är det höst"
-
-    # Create OurWrapped playlist
-    new_playlist_info = create_playlist()
-
-    # Get id of newly created playlist 
+    playlist_name = "Tame Impala"
+#
+#    # Create OurWrapped playlist
+    new_playlist_info = create_playlist(key_user)
+#
+#    # Get id of newly created playlist 
     new_playlist_id = get_new_playlists_id(new_playlist_info)
-
-    # Determines number of tracks to select
+#
+#    # Determines number of tracks to select
     no_of_tracks = 3
 
-    # Gets users playlists
-    user_playlists = get_user_playlists()
+    # For each user 
+    for user in users:
 
-    # Gets playlist id of selected playlist 
-    playlist_id = get_user_playlist_id(user_playlists, playlist_name)
+        # Gets users playlists
+        user_playlists = get_user_playlists(user)
+ 
+        # Gets playlist id of selected playlist 
+        playlist_id = get_user_playlist_id(user_playlists, playlist_name)
 
-    # Gets tracks ids from selected playlist 
-    track_ids = get_track_ids(no_of_tracks, playlist_id)
+        # Gets tracks ids from selected playlist 
+        track_ids = get_track_ids(no_of_tracks, playlist_id)
     
-    # Add tracks to newly created playlist
-    add_tracks(track_ids, new_playlist_id)
+        # Add tracks to newly created playlist
+        add_tracks(track_ids, new_playlist_id)
 
 
 
