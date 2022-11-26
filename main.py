@@ -5,6 +5,7 @@ import base64
 from secrets import SPOTIFY_USER_ID as user_id
 from refresh import Refresh
 import urllib.parse
+import random
 
 # Create new playlist OurWrapped
     # TODO --> set playlist description as usernames of collaborators! 
@@ -100,7 +101,7 @@ def get_track_ids(no_of_tracks, playlist_id):
 
 def get_new_playlists_id(new_playlist_info):
     return(new_playlist_info.get('id'))
-    
+
 def encode_tracks(track_ids):
     
     encoded_tracks = ''
@@ -113,7 +114,9 @@ def encode_tracks(track_ids):
     return encoded_tracks
 
 def add_tracks(track_ids, playlist_id):
-    
+
+    random.shuffle(track_ids)
+
     tracks = encode_tracks(track_ids)
     query = "https://api.spotify.com/v1/playlists/{}/tracks?uris={}".format(
         playlist_id,
