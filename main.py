@@ -4,6 +4,7 @@ import requests
 import base64
 from secrets import SPOTIFY_USER_ID as user_id
 from refresh import Refresh
+import urllib.parse
 
 # Create new playlist OurWrapped
     # TODO --> set playlist description as usernames of collaborators! 
@@ -103,7 +104,29 @@ def get_track_ids(no_of_tracks, playlist_id):
 def get_new_playlists_id(new_playlist_info):
     return(new_playlist_info.get('id'))
 
-def add_track_to_playlist(track_ids, playlist_id):
+def add_track_to_playlist(track_id, playlist_id):
+    
+    track = 'spotify:track:' + track_id
+    print(track)
+
+    track_encoded = urllib.parse.quote(track)
+    print(track_encoded)
+
+    #query = "https://api.spotify.com/v1/playlists/{}/tracks?uris=spotify%3Atrack%3A4iV5W9uYEdYUVa79Axb7Rh".format(
+    #    playlist_id)
+    #response = requests.post(
+    #    query,
+    #    data='',
+    #    headers={
+    #        "Content-Type": "application/json",
+    #        "Authorization": "Bearer {}".format(token)
+    #    }
+    #)
+    #response_json = response.json()
+    #return response_json
+    
+    
+    
     pass
 
 
@@ -133,5 +156,5 @@ if __name__ == '__main__':
     
     new_playlist_id = get_new_playlists_id(new_playlist_info)
 
-    # add_track_to_playlist(track_id)
+    add_track_to_playlist(track_id, new_playlist_id)
 
