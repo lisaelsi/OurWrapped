@@ -7,20 +7,7 @@ from refresh import Refresh
 import urllib.parse
 import random
 
-# Create new playlist OurWrapped
-    # TODO --> set playlist description as usernames of collaborators! 
-
-# For each user
-
-    # Go to user 
-
-    # Go to Wrapped playlist
-
-    # For top three song in Wrapped 
-
-        # Add song to OurWrapped
-
-def create_playlist(user):
+def create_playlist(user, token):
     # Create playlist on spotify 
     request_body = json.dumps({
         "name": "OurWrapped",
@@ -41,9 +28,8 @@ def create_playlist(user):
     response_json = response.json()
     return response_json
 
-def get_user_playlists(user):
-    # TODO - fixa limit och offset
-    limit = 5
+def get_user_playlists(user, token):
+    limit = 10
     offset = 0    
     query = "https://api.spotify.com/v1/users/{}/playlists?limit={}&offset={}".format(
         user,
@@ -71,9 +57,9 @@ def get_user_playlist_id(response, playlist_name):
 
         # ------  TODO - error handling ------
 
-def get_tracks_from_playlist(no_of_tracks, playlist_id):
+def get_tracks_from_playlist(no_of_tracks, playlist_id, token):
     limit = no_of_tracks
-    offset = 0     # TODO - fix hardcoded value
+    offset = 0    
 
     query = "https://api.spotify.com/v1/playlists/{}/tracks?fields=items(track(id))&limit={}&offset={}".format(
         playlist_id,
@@ -91,8 +77,8 @@ def get_tracks_from_playlist(no_of_tracks, playlist_id):
 
     return response.json()
 
-def get_track_ids(no_of_tracks, playlist_id):
-    tracks_dict = get_tracks_from_playlist(no_of_tracks, playlist_id)
+def get_track_ids(no_of_tracks, playlist_id, token):
+    tracks_dict = get_tracks_from_playlist(no_of_tracks, playlist_id, token)
 
     tracks = tracks_dict.get('items')
 
@@ -114,7 +100,7 @@ def encode_tracks(track_ids):
     
     return encoded_tracks
 
-def add_tracks(track_ids, playlist_id):
+def add_tracks(track_ids, playlist_id, token):
 
     random.shuffle(track_ids)
 
@@ -137,44 +123,41 @@ def call_refresh():
     return(refresh_caller.refresh())
  
 
-if __name__ == '__main__':
+def main():
 
     token = call_refresh()
 
-    input_users = input("Enter usernames:")
-
-    #users = ['lisasam', '1111891353']
+    input_users = input("Enter usernames: ")
 
     users = input_users.split()
 
-    print(users)
-
     # Select playlist to get songs from
-    playlist_name = "Tame Impala"
-#
+    playlist_name = input("Input playlist name: ")
+
 #    # Create OurWrapped playlist
-    new_playlist_info = create_playlist(key_user)
-#
+    new_playlist_info = create_playlist(key_user, token)
+
 #    # Get id of newly created playlist 
     new_playlist_id = get_new_playlists_id(new_playlist_info)
-#
+
 #    # Determines number of tracks to select
-    no_of_tracks = 3
+    no_of_tracks = input("Enter number of tracks: ")
 
     # For each user 
     for user in users:
 
         # Gets users playlists
-        user_playlists = get_user_playlists(user)
+        user_playlists = get_user_playlists(user, token)
  
         # Gets playlist id of selected playlist 
         playlist_id = get_user_playlist_id(user_playlists, playlist_name)
 
         # Gets tracks ids from selected playlist 
-        track_ids = get_track_ids(no_of_tracks, playlist_id)
+        track_ids = get_track_ids(no_of_tracks, playlist_id, token)
     
         # Add tracks to newly created playlist
-        add_tracks(track_ids, new_playlist_id)
+        add_tracks(track_ids, new_playlist_id, token)
 
 
-
+if __name__ == '__main__':
+    main()
