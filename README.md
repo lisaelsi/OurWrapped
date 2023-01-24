@@ -9,3 +9,9 @@ The game is simple: play the song, and when you feel ready, let everyone point a
 
 ### The script
 I created this script to avoid the possible spoilers that can happen when you try to play this game using a collaborative playlist. Now, you can simply add the usernames of the people who wants to join, select the playlist to get the songs from, and select a number of songs. The playlist is shuffled and ready to go!
+
+### Installing
+The script uses the Spotify API, and to run it you need a Spotify developer account. In the secrets.py file, you should define a *key user*. The playlist will be created in the name of this user. 
+
+I use the Client Credentials authorisation flow, and will refer to this excellent video demonstrating how to set it up: 
+https://www.youtube.com/watch?v=9mKAAWRheTA. An additional resource from the same person is this comprehensive article: https://prettystatic.com/automate-the-spotify-api-with-python/. 
