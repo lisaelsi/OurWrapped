@@ -7,5 +7,5 @@ Each year, Spotify releases a playlist with your most played songs - Spotify Wra
 
 The game is simple: play the song, and when you feel ready, let everyone point at the person they think had this song on their Spotify Wrapped. 
 
-##The script
+### The script
 I created this script to avoid the possible spoilers that can happen when you try to play this game using a collaborative playlist. Now, you can simply add the usernames of the people who wants to join, select the playlist to get the songs from, and select a number of songs. The playlist is shuffled and ready to go!
