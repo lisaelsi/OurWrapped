@@ -55,8 +55,6 @@ def get_user_playlist_id(response, playlist_name):
 
     print('Playlist not found')
 
-        # ------  TODO - error handling ------
-
 def get_tracks_from_playlist(no_of_tracks, playlist_id, token):
     limit = no_of_tracks
     offset = 0    
@@ -134,13 +132,13 @@ def main():
     # Select playlist to get songs from
     playlist_name = input("Input playlist name: ")
 
-#    # Create OurWrapped playlist
+    # Create OurWrapped playlist
     new_playlist_info = create_playlist(key_user, token)
 
-#    # Get id of newly created playlist 
+    # Get id of newly created playlist 
     new_playlist_id = get_new_playlists_id(new_playlist_info)
 
-#    # Determines number of tracks to select
+    # Determines number of tracks to select
     no_of_tracks = input("Enter number of tracks: ")
 
     # For each user 
